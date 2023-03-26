@@ -1,4 +1,5 @@
-import twemoji from 'twemoji';
+//直接无脑替换“twemoji”为“msmeoji”，没什么。
+import msemoji from 'msemoji';
 
 import { override } from 'flarum/common/extend';
 import Post from 'flarum/common/models/Post';
@@ -30,17 +31,17 @@ export default function renderEmoji() {
     const contentHtml = original();
 
     if (this.oldContentHtml !== contentHtml) {
-      // We need to parse the HTML string into a DOM node, then give it to Twemoji.
+      // We need to parse the HTML string into a DOM node, then give it to msemoji.
       //
       // This prevents some issues with the default find-replace that would be performed
-      // on a string passed to `Twemoji.parse()`.
+      // on a string passed to `msemoji.parse()`.
       //
       // The parse function can only handle a single DOM node provided, so we need to
       // wrap it in a node. In our `parseHTML` implementation, we wrap it in a `<body>`
       // element. This gets stripped below.
       //
       // See https://github.com/flarum/core/issues/2958
-      const emojifiedDom = twemoji.parse(parseHTML(contentHtml), options);
+      const emojifiedDom = msemoji.parse(parseHTML(contentHtml), options);
 
       // Steal the HTML string inside the emojified DOM `<body>` tag.
       this.emojifiedContentHtml = emojifiedDom.innerHTML;
@@ -54,6 +55,6 @@ export default function renderEmoji() {
   override(s9e.TextFormatter, 'preview', (original, text, element) => {
     original(text, element);
 
-    twemoji.parse(element, options);
+    msemoji.parse(element, options);
   });
 }
